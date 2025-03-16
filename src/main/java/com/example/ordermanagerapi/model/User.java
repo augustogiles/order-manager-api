@@ -6,8 +6,15 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 import java.io.Serializable;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements Serializable {
 
     @Id
@@ -19,9 +26,6 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private String email;
-
-    // Constructors
-    public User() {}
 
     public User(String name, String email) {
         this.name = name;

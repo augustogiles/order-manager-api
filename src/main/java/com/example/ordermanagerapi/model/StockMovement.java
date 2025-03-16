@@ -1,11 +1,18 @@
 package com.example.ordermanagerapi.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "stock_movements")
+@NoArgsConstructor
+@AllArgsConstructor
 public class StockMovement {
     @Id
     @Column(name = "stock_movement_id")
@@ -20,9 +27,6 @@ public class StockMovement {
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
-
-    // Constructors
-    public StockMovement() {}
 
     public StockMovement(LocalDateTime creationDate, Integer quantity, Item item) {
         this.creationDate = creationDate;
