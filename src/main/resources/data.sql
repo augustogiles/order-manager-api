@@ -1,0 +1,1 @@
+INSERT INTO users (user_id, name, email) VALUES (0, 'AAAAA', 'BBB')
