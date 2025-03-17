@@ -6,6 +6,8 @@ import com.example.ordermanagerapi.repository.OrderRepository;
 import com.example.ordermanagerapi.repository.StockMovementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -16,7 +18,8 @@ import java.util.List;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final StockMovementRepository stockMovementRepository;
-    //TODO: email e logging
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+    //TODO: email
 
     @Transactional
     public Order createOrder(Order order) {
@@ -29,6 +32,9 @@ public class OrderService {
     @Transactional
     public void processStockMovement(StockMovement stockMovement) {
         stockMovement = stockMovementRepository.save(stockMovement);
+        logger.info("Created stock movement #{} for {} units of item #{}",
+                stockMovement.getStockMovementId(), stockMovement.getQuantity(), stockMovement.getItem().getItemId());
+
 
         List<Order> pendingOrders = orderRepository
                 .findByItemItemIdAndCompletedQuantityLessThanOrderByCreationDateAsc(
@@ -49,8 +55,8 @@ public class OrderService {
 
             orderRepository.save(order);
             remainingQuantity -= toFulfill;
-
-            //TODO: log updated order
+            logger.info("Updated order #{} completion: {}/{} units",
+                    order.getOrderId(), order.getCompletedQuantity(), order.getQuantity());
 
             if (order.isComplete()) {
                 handleOrderCompletion(order);
@@ -76,7 +82,8 @@ public class OrderService {
         }
 
         orderRepository.save(order);
-        //TODO: log order
+        logger.info("Initial fulfillment of order #{}: {}/{} units",
+                order.getOrderId(), order.getCompletedQuantity(), order.getQuantity());
 
         if (order.isComplete()) {
             handleOrderCompletion(order);
@@ -84,7 +91,7 @@ public class OrderService {
     }
 
     private void handleOrderCompletion(Order order) {
-        //TODO: log order completion
+        logger.info("Order #{} completed", order.getOrderId());
         //TODO: send notification by email
     }
 
