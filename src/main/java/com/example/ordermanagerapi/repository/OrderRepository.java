@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByUserIdOrderByCreationDateDesc(Long userId);
-    List<Order> findByItemIdAndCompletedQuantityLessThanQuantityOrderByCreationDateAsc(Long itemId);
+    List<Order> findByUserUserIdOrderByCreationDateDesc(Long userId);
+    List<Order> findByItemItemIdAndCompletedQuantityLessThanOrderByCreationDateAsc(Long itemId, Integer quantity);
 }
